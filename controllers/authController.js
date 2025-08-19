@@ -11,7 +11,7 @@ const generateToken = (userId) =>{
 //signup
 const registerUser = async(req,res)=>{
 try {
-    const {name, email, password, profileImageUrl} = req.body
+    const {name, email, password, role} = req.body
     const userExits = await User.findOne({email})
     if(userExits){
         return res.status(400).send({message:"User already exists"})
@@ -22,7 +22,7 @@ try {
 
     //create new user
     const user = await User.create({
-        name, email, password:hashPassword, profileImageUrl
+        name, email, password:hashPassword, role
     })
 
     res.status(200).send({
@@ -30,7 +30,7 @@ try {
         _id:user._id,
         name:user.name,
         email:user.email,
-        profileImageUrl:user.profileImageUrl,
+        role:user.role,
         token: generateToken(user._id)
     })
 } catch (error) {
@@ -59,7 +59,7 @@ const loginUser = async(req,res)=>{
         _id:user._id,
         name:user.name,
         email:user.email,
-        profileImageUrl:user.profileImageUrl,
+        role:user.role,
         token: generateToken(user._id)
     })
 
