@@ -5,9 +5,6 @@ const path = require("path")
 const cors = require("cors")
 const connection = require("./config/db")
 const authRoutes = require("./routes/authRoutes")
-const sessionRoutes = require("./routes/sessionRoutes")
-const questionRoutes = require("./routes/questionRoutes")
-const { generateInterviewQuestions, generateConceptExplainations } = require("./controllers/aiController")
 const protect = require("./middlewares/authMiddleware")
 
 
@@ -16,9 +13,6 @@ app.use(express.json())
 app.use(cors())
 
 
-
-//deploymentcode
-app.use(express.static(path.resolve(__dirname, 'dist')));
 
 
 app.get("/api-endpoint",(req,res)=>{

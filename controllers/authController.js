@@ -26,12 +26,8 @@ try {
     })
 
     res.status(200).send({
-        message:"Signup successfull",
-        _id:user._id,
-        name:user.name,
-        email:user.email,
-        role:user.role,
-        token: generateToken(user._id)
+        success:true,
+        message:"User registered successfully",
     })
 } catch (error) {
     res.status(400).send({message:"Server error", error:error.message})
@@ -55,12 +51,15 @@ const loginUser = async(req,res)=>{
         }
 
          res.status(200).send({
+            success:true,
+            token: generateToken(user._id),
         message:"Login successfull",
-        _id:user._id,
+         "user": {
+        id:user._id,
         name:user.name,
         email:user.email,
         role:user.role,
-        token: generateToken(user._id)
+         }
     })
 
     } catch (error) {
