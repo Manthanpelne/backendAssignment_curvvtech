@@ -43,20 +43,20 @@ npm run server
 ## API Endpoints
 
 ### Authentication
-- `POST /auth/signup` - Register new user
-- `POST /auth/login` - Login user
+- `POST /api/auth/signup` - Register new user
+- `POST /api/auth/login` - Login user
 
 ### Device Management
-- `POST /devices` - Register new device
-- `GET /devices` - List devices (with filters)
-- `PATCH /devices/:id` - Update device
-- `DELETE /devices/:id` - Delete device
-- `POST /devices/:id/heartbeat` - Record device heartbeat
+- `POST /api/devices` - Register new device
+- `GET /api/devices` - List devices (with filters)
+- `PATCH /api/devices/:id` - Update device
+- `DELETE /api/devices/:id` - Delete device
+- `POST /api/devices/:id/heartbeat` - Record device heartbeat
 
 ### Data & Analytics
-- `POST /devices/:id/logs` - Create log entry
-- `GET /devices/:id/logs` - Get device logs
-- `GET /devices/:id/usage` - Get device usage analytics
+- `POST /api/devices/:id/logs` - Create log entry
+- `GET /api/devices/:id/logs` - Get device logs
+- `GET /api/devices/:id/usage` - Get device usage analytics
 
 
 
