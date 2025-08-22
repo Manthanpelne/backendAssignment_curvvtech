@@ -37,12 +37,7 @@ JWT_EXPIRE=7d
 
 3. Start the server:
 ```bash
-npm start
-```
-
-For development with auto-restart:
-```bash
-npm run dev
+npm run server
 ```
 
 ## API Endpoints
