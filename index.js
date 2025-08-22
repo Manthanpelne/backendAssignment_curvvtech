@@ -1,32 +1,55 @@
-const express = require("express")
-const app = express()
-require("dotenv").config()
-const path = require("path")
-const cors = require("cors")
+const express = require('express');
+const cors = require('cors');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const cron = require('node-cron');
+require('dotenv').config();
 const connection = require("./config/db")
 const authRoutes = require("./routes/authRoutes")
-const protect = require("./middlewares/authMiddleware")
-
-
-//middlewares
-app.use(express.json())
-app.use(cors())
+const deviceRoutes = require('./routes/deviceRoute');
+const { deactivateInactiveDevices } = require('./jobs/deviceJobs');
 
 
 
+const app = express()
 
-app.get("/api-endpoint",(req,res)=>{
-    res.send("api is working fine")
-})
+// Security middleware
+app.use(helmet());
+app.use(cors());
+
+// Global rate limiting
+const limiter = rateLimit({
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100, // limit each IP to 100 requests per windowMs
+  message: {
+    success: false,
+    message: 'Too many requests from this IP, please try again later.'
+  }
+});
+
+app.use(limiter);
+
+// Body parser middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true }));
+
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/devices', deviceRoutes);
 
 
 
-//routes
-app.use("/api/auth",authRoutes)
+// Background job: Run every hour to deactivate inactive devices
+cron.schedule('0 * * * *', () => {
+  console.log('Running device deactivation job...');
+  deactivateInactiveDevices();
+});
 
 
+const PORT = process.env.PORT || 5000;
 
-app.listen(process.env.port,async()=>{
-    connection()
-    console.log(`server running on port:${process.env.port}`)
-})
+
+app.listen(PORT, async() => {
+    await connection()
+  console.log(`Server running on port ${PORT}`);
+});
